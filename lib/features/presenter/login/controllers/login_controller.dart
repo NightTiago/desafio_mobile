@@ -47,24 +47,24 @@ abstract class LoginControllerBase with Store {
     if (formState!.validate()) {
       formState.save();
       try {
-        var authUser =
-            await _authService.loginUser(email: _email, password: _password);
+        await _authService.loginUser(email: _email, password: _password);
         await _analyticsService.logLogin();
         LatLng position = await getLocation();
         UserEntity user = UserEntity(
-            id: authUser!.uid,
+            // id: authUser!.uid,
             email: _email,
             password: _password,
             latitude: position.latitude,
             longitude: position.longitude);
         await Modular.to.pushReplacementNamed('/', arguments: user);
         LOADING = false;
-      } on FlutterErrorDetails catch (e) {
+      } catch (e) {
         LOADING = false;
         ErrorHandler().errorDialog(context, e);
-        FirebaseCrashlytics.instance.recordFlutterError(e);
+        FirebaseCrashlytics.instance.log(e.toString());
       }
     }
+    LOADING = false;
   }
 
   Future<LatLng> getLocation() async {

@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_modular/flutter_modular.dart';
 
 class ErrorHandler {
-
   Future<bool?> errorDialog(BuildContext context, e) {
     return showCupertinoDialog(
         context: context,
@@ -11,40 +10,27 @@ class ErrorHandler {
         builder: (context) {
           return AlertDialog(
               shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(20.0)
-              ),
+                  borderRadius: BorderRadius.circular(20.0)),
               title: Text('Error'),
-              content: Column(
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    Container(
-                      height: 100.0,
-                      decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(20.0)
-                      ),
-                      child: Center(
-                          child: Text(
-                              e.message.toString()
-                          )
-                      ),
-                    ),
-                    Container(
-                        height: 50.0,
-                        child: Row(
-                            children: [
-                              TextButton(
-                                  onPressed: () {
-                                    Modular.to.pop();
-                                  },
-                                  child: Text('Ok')
-                              )
-                            ]
-                        )
-                    )
-                  ]
-              )
-          );
-        }
-    );
+              content: Column(mainAxisSize: MainAxisSize.min, children: [
+                Container(
+                  height: 100.0,
+                  decoration:
+                      BoxDecoration(borderRadius: BorderRadius.circular(20.0)),
+                  child: Center(child: Text(e.message.toString())),
+                ),
+                Container(
+                    height: 50.0,
+                    child: Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          ElevatedButton(
+                              onPressed: () {
+                                Modular.to.pop();
+                              },
+                              child: Text('Ok'))
+                        ]))
+              ]));
+        });
   }
 }

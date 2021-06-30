@@ -20,6 +20,7 @@ class AuthenticationService with ChangeNotifier {
       if (e.code == 'email-already-in-use') {
         FirebaseCrashlytics.instance.setCustomKey('email-already-in-use', e);
       }
+      throw Exception(e.code);
     }
   }
 
@@ -32,12 +33,17 @@ class AuthenticationService with ChangeNotifier {
       if (e.code == 'invalid-email') {
         FirebaseCrashlytics.instance.setCustomKey('invalid-email', e);
       }
-      return null;
+      throw Exception(e.code);
     }
   }
 
   //Test
   Future test({required String email}) async {
-    Text("Olá, meu caro $email");
+    try {
+      Text("Olá, meu caro $email");
+      return true;
+    } catch (e) {
+      return false;
+    }
   }
 }

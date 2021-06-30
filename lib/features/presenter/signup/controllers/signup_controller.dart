@@ -45,24 +45,24 @@ abstract class SignUpControllerBase with Store {
     final formState = formKeys.currentState;
     if (formState!.validate()) {
       try {
-        var authUser =
-            await _authService.createUser(email: _email, password: _password);
+        await _authService.createUser(email: _email, password: _password);
         await _analyticsService.logSignUp();
         LatLng position = (await getLocation());
         UserEntity user = UserEntity(
-            id: authUser.user.uid,
+            // id: authUser.user.uid,
             email: _email,
             password: _password,
             latitude: position.latitude,
             longitude: position.longitude);
         await Modular.to.pushReplacementNamed('/', arguments: user);
         LOADING = false;
-      } on FlutterErrorDetails catch (e) {
+      } catch (e) {
         ErrorHandler().errorDialog(context, e);
-        FirebaseCrashlytics.instance.recordFlutterError(e);
+        FirebaseCrashlytics.instance.log(e.toString());
         LOADING = false;
       }
     }
+    LOADING = false;
   }
 
   Future<LatLng> getLocation() async {
