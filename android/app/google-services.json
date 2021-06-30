@@ -71,6 +71,64 @@
           ]
         }
       }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:362418775669:android:45d964af81e46e7e843a3c",
+        "android_client_info": {
+          "package_name": "com.desafio_mobile"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "362418775669-cact91egs0hgd6h6vr16e5nk9iai3jdt.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyB_gpSw1qsmqn6e7lrch5_SmQHQ-LpH40k"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "362418775669-cact91egs0hgd6h6vr16e5nk9iai3jdt.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:362418775669:android:b4e16f9df1f6b64f843a3c",
+        "android_client_info": {
+          "package_name": "com.example.desafio_mobile"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "362418775669-cact91egs0hgd6h6vr16e5nk9iai3jdt.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyB_gpSw1qsmqn6e7lrch5_SmQHQ-LpH40k"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "362418775669-cact91egs0hgd6h6vr16e5nk9iai3jdt.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
     }
   ],
   "configuration_version": "1"
