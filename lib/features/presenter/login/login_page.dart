@@ -1,3 +1,4 @@
+import 'package:desafio_mobile/core/erros/errorHandler.dart';
 import 'package:desafio_mobile/features/domain/usecases/authentication_service.dart';
 import 'package:desafio_mobile/features/presenter/login/controllers/login_controller.dart';
 import 'package:firebase_analytics/firebase_analytics.dart';
@@ -16,6 +17,8 @@ class _LoginPageState extends State<LoginPage> {
   late ScrollController scrollController;
   late LoginController loginController;
   final GlobalKey<FormState> _formKeys = GlobalKey<FormState>();
+  late bool actSignIn = false;
+
 
   @override
   void initState() {
@@ -53,7 +56,7 @@ class _LoginPageState extends State<LoginPage> {
                             ),
                             keyboardType: TextInputType.emailAddress,
                             onChanged: (val) {
-                              loginController.setEmail(val);
+                              loginController.setEmail = val;
                             },
                           )),
                       Container(
@@ -68,7 +71,7 @@ class _LoginPageState extends State<LoginPage> {
                             hintText: "Password:"),
                         obscureText: true,
                         onChanged: (val) {
-                          loginController.setPassword(val);
+                          loginController.setPassword = val;
                         },
                       )),
                       Container(
@@ -91,23 +94,23 @@ class _LoginPageState extends State<LoginPage> {
                                       ? CircularProgressIndicator(
                                           backgroundColor: Colors.white,
                                         )
-                                      : Text("Login",
-                                          style:
-                                              TextStyle(color: Colors.white))),
-                              onPressed: () {
-                                loginController.LOADING = true;
-                                loginController.singIn(_formKeys, context);
+                                      : Text(actSignIn ? "carregando..." : "Cadastre-se",
+                                      style: TextStyle(
+                                          color: Colors.white))),
+                              onPressed: () async {
+                                final formState = _formKeys.currentState;
+                                if (formState!.validate()) {
+                                  actSignIn = true;
+                                  dynamic ret = await loginController.singIn();
+                                  if(ret != null){
+                                    ErrorHandler().errorDialog(context, ret);
+                                  }
+                                }
                               }))
                     ],
                   ),
                 )),
           )),
-      floatingActionButton: FloatingActionButton(
-          key: Key('teste'),
-          onPressed: () {
-            var auht = AuthenticationService();
-            auht.test(email: loginController.email);
-          }),
     );
   }
 }

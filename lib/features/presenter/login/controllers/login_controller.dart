@@ -30,42 +30,35 @@ abstract class LoginControllerBase with Store {
 
   String get password => _password;
 
-  @action
-  void setEmail(String valor) {
+  set setEmail(String valor) {
     _email = valor;
   }
 
-  @action
-  void setPassword(String valor) {
+  set setPassword(String valor) {
     _password = valor;
   }
 
   @action
-  Future<void> singIn(
-      GlobalKey<FormState> formKeys, BuildContext context) async {
-    final formState = formKeys.currentState;
-    if (formState!.validate()) {
-      formState.save();
+  Future singIn() async {
       try {
         await _authService.loginUser(email: _email, password: _password);
         await _analyticsService.logLogin();
         LatLng position = await getLocation();
         UserEntity user = UserEntity(
-            // id: authUser!.uid,
             email: _email,
             password: _password,
             latitude: position.latitude,
             longitude: position.longitude);
         await Modular.to.pushReplacementNamed('/', arguments: user);
         LOADING = false;
+        return null;
       } catch (e) {
         LOADING = false;
-        ErrorHandler().errorDialog(context, e);
         FirebaseCrashlytics.instance.log(e.toString());
+        return e;
       }
     }
-    LOADING = false;
-  }
+
 
   Future<LatLng> getLocation() async {
     Position positionCurrent = await Geolocator.getCurrentPosition();

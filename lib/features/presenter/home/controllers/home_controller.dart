@@ -39,7 +39,7 @@ abstract class HomeControllerBase with Store {
   }
 
   @action
-  Future<void> adicionarUltimalocalizacao(UserEntity user) async {
+  Future<dynamic> adicionarUltimalocalizacao(UserEntity user) async {
     UserModel userModel = UserModel(
         email: user.email,
         latitude: user.latitude,
@@ -48,7 +48,7 @@ abstract class HomeControllerBase with Store {
   }
 
   @action
-  void addMarker(double lat, double long, Set<Marker> markers) {
+  dynamic addMarker(double lat, double long, Set<Marker> markers) {
     LatLng position = LatLng(lat, long);
     final Marker marker = Marker(
         markerId: MarkerId("1"),

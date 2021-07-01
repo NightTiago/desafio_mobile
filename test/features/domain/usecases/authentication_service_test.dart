@@ -10,78 +10,40 @@ import 'package:rxdart/rxdart.dart';
 import '../../presenter/mocks.dart';
 
 
-class MockFirebaseUser extends Mock implements User {}
-class MockAuthResult extends Mock implements UserCredential {}
-
 void main() async {
+
   setupFirebaseAuthMocks();
   await Firebase.initializeApp();
 
-
-  final BehaviorSubject<MockFirebaseUser> _user = BehaviorSubject<MockFirebaseUser>();
-  // late MockAuthenticationService _repo;
   late AuthenticationService _repo;
   final MockUser user = MockUser(
     isAnonymous: false,
     uid: 'someuid',
     email: 'bob@somedomain.com',
     displayName: 'Bob',
+    isEmailVerified: false
   );
   final _auth = MockFirebaseAuth(mockUser: user);
 
   setUpAll(() {
-    // _repo = MockAuthenticationService(auth: _auth);
     _repo = AuthenticationService.instance(auth: _auth);
-
-  });
-
+  } );
   group('user repository test', () {
-    when(_auth.signInWithEmailAndPassword(
-            email: "5@test.com", password: "123456"))
-        .thenAnswer((_) async {
-      _user.add(MockFirebaseUser());
-      return MockAuthResult();
+    
+    when(_auth.createUserWithEmailAndPassword(email: "test@test.com", password: "123456")).thenReturn(Future.value());
+
+    test("signup in with email and password", () async {
+      dynamic signedUp = await _repo.createUser(email: 'teste@teste.com', password: "123123a");
+      expect(signedUp, isInstanceOf<MockUser>());
+      expect(_repo.status, Status.Authenticated);
     });
 
-    // when(auth.signInWithEmailAndPassword(email: "test", password: "123"))
-    //     .thenThrow(() {
-    //   return null;
+    // test("sign in with email and password by service", () async {
+    //   dynamic signedIn = await _repo.loginUser(email: 'teste@teste.com', password: "123123");
+    //   expect(signedIn, isInstanceOf<MockUser>());
+    //   expect(_repo.status, Status.Authenticated);
     // });
-
-    test("sign in with email and password", () async {
-      bool signedIn =
-          await _repo.createUser(email: "test2@test.com", password: "123456");
-      expect(signedIn, true);
-    });
-
-    test("sing in fails with incorrect email and password", () async {
-      bool signedIn = await _repo.loginUser(email: "test", password: "123");
-      expect(signedIn, false);
-    });
   });
 
-  group('user repository test', () {
-    // when(auth.createUserWithEmailAndPassword(
-    //         email: "test3@test.com", password: "123456"))
-    //     .thenAnswer((_) async {
-    //   _user.add(MockFirebaseUser());
-    //   return MockAuthResult();
-    // });
 
-    // when(auth.createUserWithEmailAndPassword(email: "", password: ""))
-    //     .thenThrow(() {
-    //   return null;
-    // });
-
-    test("sign in with email and password", () async {
-      bool signedIn =
-          await _repo.createUser(email: "test4@test.com", password: "123456");
-      expect(signedIn, true);
-    });
-
-    test("sing in fails with incorrect email and password", () async {
-      bool signedIn = await _repo.createUser(email: "qwe", password: "123");
-      expect(signedIn, false);
-    });
-  });
 }

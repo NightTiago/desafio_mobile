@@ -65,7 +65,7 @@ mixin _$HomeController on HomeControllerBase, Store {
       AsyncAction('HomeControllerBase.adicionarUltimalocalizacao');
 
   @override
-  Future<void> adicionarUltimalocalizacao(UserEntity user) {
+  Future<dynamic> adicionarUltimalocalizacao(UserEntity user) {
     return _$adicionarUltimalocalizacaoAsyncAction
         .run(() => super.adicionarUltimalocalizacao(user));
   }
@@ -74,7 +74,7 @@ mixin _$HomeController on HomeControllerBase, Store {
       ActionController(name: 'HomeControllerBase');
 
   @override
-  void addMarker(double lat, double long, Set<Marker> markers) {
+  dynamic addMarker(double lat, double long, Set<Marker> markers) {
     final _$actionInfo = _$HomeControllerBaseActionController.startAction(
         name: 'HomeControllerBase.addMarker');
     try {

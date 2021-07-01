@@ -59,6 +59,9 @@ void main() async {
     testWidgets('email, password and button were found',
         (WidgetTester tester) async {
       await tester.pumpWidget(testWidgetLoginPage);
+      var text = find.text("Bem vindo, test2@test.com");
+
+      expect(text, findsOneWidget);
       expect(signInButton, findsOneWidget);
     });
   });

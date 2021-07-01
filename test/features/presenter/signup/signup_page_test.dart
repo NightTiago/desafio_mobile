@@ -1,9 +1,12 @@
+import 'package:desafio_mobile/app_module.dart';
 import 'package:desafio_mobile/features/domain/entities/user_entity.dart';
+import 'package:desafio_mobile/features/presenter/signup/controllers/signup_controller.dart';
 import 'package:desafio_mobile/features/presenter/signup/signup_page.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_modular/flutter_modular.dart';
+import 'package:flutter_modular_test/flutter_modular_test.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mockito/mockito.dart';
 
@@ -18,8 +21,13 @@ class MyNavigatorMock extends Mock implements IModularNavigator {
 void main() async {
   setupFirebaseAuthMocks();
   await Firebase.initializeApp();
+  initModule(AppModule());
+
+  late SignUpController signController;
   var navigatorMock;
+
   setUpAll((){
+    signController = Modular.get();
     navigatorMock = MyNavigatorMock();
     // Modular.to and Modular.link will be called MyNavigatorMock implements!
     Modular.navigatorDelegate = navigatorMock;
@@ -71,9 +79,7 @@ void main() async {
       await tester.enterText(passwordFormField, '123456');
       await tester.tap(signInButton);
       await tester.pumpAndSettle(Duration(seconds: 2));
-
-      expect(find.text("carregando..."), findsOneWidget);
-
+      expect(signController.LOADING, false);
     });
 
     // testWidgets('calls sing in method when email and password is entered by type CircularProgressIndicator',
@@ -91,7 +97,6 @@ void main() async {
   group('singup navigation test', () {
     test('test mock navigator to ROOT', () async {
       UserEntity user = UserEntity(
-        // id: authUser.user.uid,
           email: 'test2@test.com',
           password: '123456',
           latitude: double.parse('2.7965843'),

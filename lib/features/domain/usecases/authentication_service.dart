@@ -23,11 +23,13 @@ class AuthenticationService with ChangeNotifier {
     try {
       var authResult = await auth.createUserWithEmailAndPassword(
           email: email, password: password);
+      _status = Status.Authenticated;
       return authResult.user;
     } on FirebaseAuthException catch (e) {
       if (e.code == 'email-already-in-use') {
         FirebaseCrashlytics.instance.setCustomKey('email-already-in-use', e);
       }
+      _status = Status.Unauthenticated;
       throw Exception(e.code);
     }
   }
@@ -44,16 +46,6 @@ class AuthenticationService with ChangeNotifier {
       }
       _status = Status.Unauthenticated;
       throw Exception(e.code);
-    }
-  }
-
-  //Test
-  Future test({required String email}) async {
-    try {
-      Text("Olá, meu caro $email");
-      return true;
-    } catch (e) {
-      return false;
     }
   }
 

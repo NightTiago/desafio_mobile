@@ -17,7 +17,6 @@ void main() async {
       data: MediaQueryData(), child: MaterialApp(home: SignUpPage()));
 
   testWidgets('testing my widgets', (WidgetTester tester) async {
-    // Build our app and trigger a frame.
     await tester.pumpWidget(testWidgetLoginPage);
 
     var emailFormField = find.byKey(Key('email-field'));

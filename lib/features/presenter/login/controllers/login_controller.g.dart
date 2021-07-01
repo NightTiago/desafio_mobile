@@ -57,33 +57,8 @@ mixin _$LoginController on LoginControllerBase, Store {
   final _$singInAsyncAction = AsyncAction('LoginControllerBase.singIn');
 
   @override
-  Future<void> singIn(GlobalKey<FormState> formKeys, BuildContext context) {
-    return _$singInAsyncAction.run(() => super.singIn(formKeys, context));
-  }
-
-  final _$LoginControllerBaseActionController =
-      ActionController(name: 'LoginControllerBase');
-
-  @override
-  void setEmail(String valor) {
-    final _$actionInfo = _$LoginControllerBaseActionController.startAction(
-        name: 'LoginControllerBase.setEmail');
-    try {
-      return super.setEmail(valor);
-    } finally {
-      _$LoginControllerBaseActionController.endAction(_$actionInfo);
-    }
-  }
-
-  @override
-  void setPassword(String valor) {
-    final _$actionInfo = _$LoginControllerBaseActionController.startAction(
-        name: 'LoginControllerBase.setPassword');
-    try {
-      return super.setPassword(valor);
-    } finally {
-      _$LoginControllerBaseActionController.endAction(_$actionInfo);
-    }
+  Future<dynamic> singIn() {
+    return _$singInAsyncAction.run(() => super.singIn());
   }
 
   @override
