@@ -43,6 +43,7 @@ dependencies:
   cloud_firestore: ^2.2.2
   rxdart: ^0.27.1
   firebase_auth_mocks: ^0.7.1
+  flutter_modular_test:
 
 
 dev_dependencies:

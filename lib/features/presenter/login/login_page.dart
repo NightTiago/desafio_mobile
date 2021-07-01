@@ -106,7 +106,7 @@ class _LoginPageState extends State<LoginPage> {
           key: Key('teste'),
           onPressed: () {
             var auht = AuthenticationService();
-            auht.test(loginController.email);
+            auht.test(email: loginController.email);
           }),
     );
   }

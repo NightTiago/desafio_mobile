@@ -1,6 +1,7 @@
 import 'package:desafio_mobile/features/domain/entities/user_entity.dart';
 import 'package:desafio_mobile/features/domain/usecases/authentication_service.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_auth_mocks/firebase_auth_mocks.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mockito/mockito.dart';
@@ -8,63 +9,44 @@ import 'package:rxdart/rxdart.dart';
 
 import '../../presenter/mocks.dart';
 
-class MockFirebaseAuth extends Mock implements FirebaseAuth {
-  User _currentUser;
-
-  MockFirebaseAuth(this._currentUser);
-
-  Future<User> currentuser() async {
-    return _currentUser;
-  }
-}
-
-class MockUserEntity extends Mock implements UserEntity {
-  final String email;
-  final String password;
-  final double latitude;
-  final double longitude;
-
-  MockUserEntity(
-      {required this.email,
-      required this.password,
-      required this.latitude,
-      required this.longitude});
-}
-
-class MockAuthResult extends Mock implements UserCredential {}
 
 class MockFirebaseUser extends Mock implements User {}
+class MockAuthResult extends Mock implements UserCredential {}
 
 void main() async {
   setupFirebaseAuthMocks();
-
   await Firebase.initializeApp();
 
-  // final user = MockUser(
-  //     displayName: 'Tiago',
-  //     uid: 'someuid',
-  //     email: 'tiago@burro.com',
-  //     isAnonymous: false);
 
-  final user = MockFirebaseUser();
-  final auth = MockFirebaseAuth(user);
-  BehaviorSubject<MockFirebaseUser> _user = BehaviorSubject<MockFirebaseUser>();
-  AuthenticationService _repo = AuthenticationService.instance(auth: auth);
+  final BehaviorSubject<MockFirebaseUser> _user = BehaviorSubject<MockFirebaseUser>();
+  // late MockAuthenticationService _repo;
+  late AuthenticationService _repo;
+  final MockUser user = MockUser(
+    isAnonymous: false,
+    uid: 'someuid',
+    email: 'bob@somedomain.com',
+    displayName: 'Bob',
+  );
+  final _auth = MockFirebaseAuth(mockUser: user);
 
-  // when(auth.authStateChanges().first).thenAnswer((_) { return _user });
+  setUpAll(() {
+    // _repo = MockAuthenticationService(auth: _auth);
+    _repo = AuthenticationService.instance(auth: _auth);
+
+  });
 
   group('user repository test', () {
-    when(auth.signInWithEmailAndPassword(
-            email: "test2@test.com", password: "123456"))
+    when(_auth.signInWithEmailAndPassword(
+            email: "5@test.com", password: "123456"))
         .thenAnswer((_) async {
       _user.add(MockFirebaseUser());
       return MockAuthResult();
     });
 
-    when(auth.signInWithEmailAndPassword(email: "test", password: "123"))
-        .thenThrow(() {
-      return null;
-    });
+    // when(auth.signInWithEmailAndPassword(email: "test", password: "123"))
+    //     .thenThrow(() {
+    //   return null;
+    // });
 
     test("sign in with email and password", () async {
       bool signedIn =
@@ -79,17 +61,17 @@ void main() async {
   });
 
   group('user repository test', () {
-    when(auth.createUserWithEmailAndPassword(
-            email: "test3@test.com", password: "123456"))
-        .thenAnswer((_) async {
-      _user.add(MockFirebaseUser());
-      return MockAuthResult();
-    });
+    // when(auth.createUserWithEmailAndPassword(
+    //         email: "test3@test.com", password: "123456"))
+    //     .thenAnswer((_) async {
+    //   _user.add(MockFirebaseUser());
+    //   return MockAuthResult();
+    // });
 
-    when(auth.createUserWithEmailAndPassword(email: "", password: ""))
-        .thenThrow(() {
-      return null;
-    });
+    // when(auth.createUserWithEmailAndPassword(email: "", password: ""))
+    //     .thenThrow(() {
+    //   return null;
+    // });
 
     test("sign in with email and password", () async {
       bool signedIn =

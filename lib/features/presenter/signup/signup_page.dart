@@ -1,3 +1,4 @@
+import 'package:desafio_mobile/core/erros/errorHandler.dart';
 import 'package:desafio_mobile/features/presenter/signup/controllers/signup_controller.dart';
 import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:firebase_analytics/observer.dart';
@@ -16,6 +17,7 @@ class _SignUpPageState extends State<SignUpPage> {
   late ScrollController scrollController;
   late SignUpController signUpController;
   final GlobalKey<FormState> _formKeys = GlobalKey<FormState>();
+  late bool actSignUp = false;
 
   @override
   void initState() {
@@ -50,7 +52,7 @@ class _SignUpPageState extends State<SignUpPage> {
                                   hintText: "E-mail:"),
                               keyboardType: TextInputType.visiblePassword,
                               onChanged: (val) {
-                                signUpController.email = val;
+                                signUpController.setEmail = val;
                               },
                             )),
                         Container(
@@ -66,7 +68,7 @@ class _SignUpPageState extends State<SignUpPage> {
                                   hintText: "Password:"),
                               obscureText: true,
                               onChanged: (val) {
-                                signUpController.password = val;
+                                signUpController.setPassword = val;
                               },
                             )),
                         Container(
@@ -97,12 +99,18 @@ class _SignUpPageState extends State<SignUpPage> {
                                         ? CircularProgressIndicator(
                                             backgroundColor: Colors.white,
                                           )
-                                        : Text("Cadastre-se",
+                                        : Text(actSignUp ? "carregando..." : "Cadastre-se",
                                             style: TextStyle(
                                                 color: Colors.white))),
-                                onPressed: () {
-                                  signUpController.LOADING = true;
-                                  signUpController.singUp(_formKeys, context);
+                                onPressed: () async {
+                                  final formState = _formKeys.currentState;
+                                  if (formState!.validate()) {
+                                    actSignUp = true;
+                                    dynamic ret = await signUpController.singUp();
+                                    if(ret != null){
+                                      ErrorHandler().errorDialog(context, ret);
+                                    }
+                                  }
                                 }))
                       ],
                     ),

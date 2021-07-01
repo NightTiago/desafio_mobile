@@ -28,26 +28,27 @@ abstract class SignUpControllerBase with Store {
   @observable
   bool LOADING = false;
 
+  late LatLng position;
+
   String get email => _email;
 
   String get password => _password;
 
-  set email(String value) {
+  set setEmail(String value) {
     _email = value;
   }
 
-  set password(String value) {
+  set setPassword(String value) {
     _password = value;
   }
 
   @action
-  Future singUp(GlobalKey<FormState> formKeys, BuildContext context) async {
-    final formState = formKeys.currentState;
-    if (formState!.validate()) {
+  Future singUp() async {
+    LOADING = true;
       try {
         await _authService.createUser(email: _email, password: _password);
         await _analyticsService.logSignUp();
-        LatLng position = (await getLocation());
+        await getLocation();
         UserEntity user = UserEntity(
             // id: authUser.user.uid,
             email: _email,
@@ -56,19 +57,17 @@ abstract class SignUpControllerBase with Store {
             longitude: position.longitude);
         await Modular.to.pushReplacementNamed('/', arguments: user);
         LOADING = false;
+        return null;
       } catch (e) {
-        ErrorHandler().errorDialog(context, e);
         FirebaseCrashlytics.instance.log(e.toString());
         LOADING = false;
+        return e;
       }
-    }
-    LOADING = false;
   }
 
-  Future<LatLng> getLocation() async {
+  Future getLocation() async {
     Position positionCurrent = await Geolocator.getCurrentPosition();
-    LatLng position =
+    position =
         LatLng(positionCurrent.latitude, positionCurrent.longitude);
-    return position;
   }
 }

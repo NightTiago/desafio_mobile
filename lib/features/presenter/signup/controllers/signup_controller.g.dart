@@ -57,8 +57,8 @@ mixin _$SignUpController on SignUpControllerBase, Store {
   final _$singUpAsyncAction = AsyncAction('SignUpControllerBase.singUp');
 
   @override
-  Future<dynamic> singUp(GlobalKey<FormState> formKeys, BuildContext context) {
-    return _$singUpAsyncAction.run(() => super.singUp(formKeys, context));
+  Future<dynamic> singUp() {
+    return _$singUpAsyncAction.run(() => super.singUp());
   }
 
   @override
