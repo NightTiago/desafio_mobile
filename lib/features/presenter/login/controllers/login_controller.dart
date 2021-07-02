@@ -40,7 +40,8 @@ abstract class LoginControllerBase with Store {
 
   @action
   Future singIn() async {
-      try {
+    LOADING = true;
+    try {
         await _authService.loginUser(email: _email, password: _password);
         await _analyticsService.logLogin();
         LatLng position = await getLocation();

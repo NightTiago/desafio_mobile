@@ -60,7 +60,6 @@ void main() async {
         (WidgetTester tester) async {
       await tester.pumpWidget(testWidgetLoginPage);
       var text = find.text("Bem vindo, test2@test.com");
-
       expect(text, findsOneWidget);
       expect(signInButton, findsOneWidget);
     });

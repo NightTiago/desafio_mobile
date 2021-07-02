@@ -16,16 +16,24 @@ void main() async {
 
   setupFirebaseAuthMocks();
   await Firebase.initializeApp();
-
   initModule(AppModule());
 
   late LoginController controller;
+
+  final MockUser user = MockUser(
+    isAnonymous: false,
+    uid: 'someuid',
+    email: 'bob@somedomain.com',
+    displayName: 'Bob',
+  );
 
   setUpAll(() {
     controller = Modular.get();
   });
 
-    test('isInstanceOf of LoginController', () async {
+  final _auth = MockFirebaseAuth(mockUser: user);
+
+  test('isInstanceOf of LoginController', () async {
       expect(controller, isInstanceOf<LoginController>());
     });
 

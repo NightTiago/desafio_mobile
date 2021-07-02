@@ -94,7 +94,7 @@ class _LoginPageState extends State<LoginPage> {
                                       ? CircularProgressIndicator(
                                           backgroundColor: Colors.white,
                                         )
-                                      : Text(actSignIn ? "carregando..." : "Cadastre-se",
+                                      : Text("Sign in",
                                       style: TextStyle(
                                           color: Colors.white))),
                               onPressed: () async {

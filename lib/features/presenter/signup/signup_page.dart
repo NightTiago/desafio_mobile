@@ -103,6 +103,7 @@ class _SignUpPageState extends State<SignUpPage> {
                                             style: TextStyle(
                                                 color: Colors.white))),
                                 onPressed: () async {
+                                  signUpController.LOADING = true;
                                   final formState = _formKeys.currentState;
                                   if (formState!.validate()) {
                                     actSignUp = true;

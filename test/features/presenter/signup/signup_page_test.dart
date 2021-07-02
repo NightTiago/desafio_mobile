@@ -14,8 +14,12 @@ import '../mocks.dart';
 
 class MyNavigatorMock extends Mock implements IModularNavigator {
   @override
-  Future<T?> pushNamed<T extends Object?>(String? routeName, {Object? arguments, bool? forRoot = false}) =>
-      (super.noSuchMethod(Invocation.method(#pushNamed, [routeName], {#arguments: arguments, #forRoot: forRoot}), returnValue: Future.value(null)) as Future<T?>);
+  Future<T?> pushNamed<T extends Object?>(String? routeName,
+          {Object? arguments, bool? forRoot = false}) =>
+      (super.noSuchMethod(
+          Invocation.method(#pushNamed, [routeName],
+              {#arguments: arguments, #forRoot: forRoot}),
+          returnValue: Future.value(null)) as Future<T?>);
 }
 
 void main() async {
@@ -26,13 +30,12 @@ void main() async {
   late SignUpController signController;
   var navigatorMock;
 
-  setUpAll((){
+  setUpAll(() {
     signController = Modular.get();
     navigatorMock = MyNavigatorMock();
     // Modular.to and Modular.link will be called MyNavigatorMock implements!
     Modular.navigatorDelegate = navigatorMock;
   });
-
 
   var emailFormField = find.byKey(Key('email-field'));
   var passwordFormField = find.byKey(Key('password-field'));
@@ -78,20 +81,10 @@ void main() async {
       await tester.enterText(emailFormField, 'test2@test.com');
       await tester.enterText(passwordFormField, '123456');
       await tester.tap(signInButton);
-      await tester.pumpAndSettle(Duration(seconds: 2));
-      expect(signController.LOADING, false);
+      await tester.pumpAndSettle();
+      var afterTapButton = tester.widget(signInButton);
+      expect(afterTapButton, isInstanceOf<ElevatedButton>());
     });
-
-    // testWidgets('calls sing in method when email and password is entered by type CircularProgressIndicator',
-    //         (WidgetTester tester) async {
-    //       await tester.pumpWidget(testWidgetLoginPage);
-    //       await tester.enterText(emailFormField, 'test2@test.com');
-    //       await tester.enterText(passwordFormField, '123456');
-    //       await tester.tap(signInButton);
-    //       await tester.pump(Duration(seconds: 2));
-    //
-    //       expect(find.byType(CircularProgressIndicator), findsOneWidget);
-    //     });
   });
 
   group('singup navigation test', () {
@@ -101,11 +94,10 @@ void main() async {
           password: '123456',
           latitude: double.parse('2.7965843'),
           longitude: double.parse('-60.7117837'));
-      when(navigatorMock.pushNamed('/', arguments: user)).thenAnswer((_) async => {});
+      when(navigatorMock.pushNamed('/', arguments: user))
+          .thenAnswer((_) async => {});
       Modular.to.pushNamed('/', arguments: user);
       verify(navigatorMock.pushNamed('/', arguments: user)).called(1);
     });
   });
-
-
 }

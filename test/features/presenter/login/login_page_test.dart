@@ -63,9 +63,9 @@ void main() async {
           await tester.enterText(emailFormField, 'test2@test.com');
           await tester.enterText(passwordFormField, '123456');
           await tester.tap(signInButton);
-          await tester.pump();
-          expect(loginController.LOADING, false);
-
+          await tester.pumpAndSettle();
+          var afterTapButton = tester.widget(signInButton);
+          expect(afterTapButton, isInstanceOf<ElevatedButton>());
         });
   });
 

@@ -44,7 +44,6 @@ abstract class SignUpControllerBase with Store {
 
   @action
   Future singUp() async {
-    LOADING = true;
       try {
         await _authService.createUser(email: _email, password: _password);
         await _analyticsService.logSignUp();
